@@ -8,6 +8,8 @@ import numpy as np
 import time
 import Cards
 import os
+from picamera2 import Picamera2
+
 
 img_path = os.path.dirname(os.path.abspath(__file__)) + '/Card_Imgs/'
 
@@ -26,10 +28,11 @@ PiOrUSB = 1
 if PiOrUSB == 1:
     # Import packages from picamera library
     from picamera.array import PiRGBArray
-    from picamera import PiCamera
+    from picamera2 import Picamera2
+
 
     # Initialize PiCamera and grab reference to the raw capture
-    camera = PiCamera()
+    camera = Picamera2()
     camera.resolution = (IM_WIDTH,IM_HEIGHT)
     camera.framerate = 10
     rawCapture = PiRGBArray(camera, size=(IM_WIDTH,IM_HEIGHT))
