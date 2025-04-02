@@ -159,7 +159,7 @@ def find_cards(thresh_image):
 
     for i in range(len(cnts_sort)):
         size = cv2.contourArea(cnts_sort[i])
-        print(f"Contour size: {size}")  # Add this line to debug
+        # print(f"Contour size: {size}")  # Add this line to debug
         peri = cv2.arcLength(cnts_sort[i],True)
         approx = cv2.approxPolyDP(cnts_sort[i],0.01*peri,True)
         
