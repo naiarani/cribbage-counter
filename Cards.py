@@ -14,7 +14,7 @@ import time
 ### Constants ###
 
 # Adaptive threshold levels
-BKG_THRESH = 60
+BKG_THRESH = 100
 CARD_THRESH = 30
 
 # Width and height of card corner, where rank and suit are
@@ -171,7 +171,7 @@ def find_cards(thresh_image):
 
 def preprocess_card(contour, image):
     """Uses contour to find information about the query card. Isolates rank
-    and suit images from the card."""
+    and suit images from the card, and marks the center on the image."""
 
     # Initialize new Query_card object
     qCard = Query_card()
@@ -193,6 +193,9 @@ def preprocess_card(contour, image):
     cent_x = int(average[0][0])
     cent_y = int(average[0][1])
     qCard.center = [cent_x, cent_y]
+
+    # Draw the center point on the image (use a red dot)
+    cv2.circle(image, (cent_x, cent_y), 10, (0, 0, 255), -1)  # Red dot with radius 10
 
     # Warp card into 200x300 flattened image using perspective transform
     qCard.warp = flattener(image, pts, w, h)
@@ -236,7 +239,7 @@ def preprocess_card(contour, image):
         Qsuit_sized = cv2.resize(Qsuit_roi, (SUIT_WIDTH, SUIT_HEIGHT), 0, 0)
         qCard.suit_img = Qsuit_sized
 
-    return qCard
+    return qCard, image  # Return both the qCard and the image with the center marked
 
 def match_card(qCard, train_ranks, train_suits):
     """Finds best rank and suit matches for the query card. Differences
